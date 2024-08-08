@@ -1,0 +1,20 @@
+version: '2.5.1'
+
+services:
+  mysqldb: 
+    image: mariadb
+    env_file: ./.env
+    environment:
+      - MARIADB_ROOT_PASSWORD=$MARIADB_ROOT_PASSWORD
+      - MARIADB_DATABASE=ecommerce
+    ports:
+      - 3306:3306
+
+  app:
+    build: .
+    depends_on:
+      - mysqldb
+    links:
+      - mysqldb
+    ports:
+      - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
